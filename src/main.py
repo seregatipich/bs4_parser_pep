@@ -43,9 +43,9 @@ def pep(session):
         if pep_page_status not in status_tuple:
             logs.append(
                 UNEXPECTED_STATUS.format(
-                 pep_link=pep_link,
-                 pep_page_status=pep_page_status,
-                 status_tuple=status_tuple
+                    pep_link=pep_link,
+                    pep_page_status=pep_page_status,
+                    status_tuple=status_tuple
                 )
             )
         if pep_page_status in temp_results:
@@ -155,4 +155,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
