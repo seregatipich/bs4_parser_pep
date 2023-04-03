@@ -1,50 +1,62 @@
-import logging
-
 from bs4 import BeautifulSoup
 from requests import RequestException
 
-from exceptions import (BROKEN_URL, RESPONSE_IS_NONE, TAG_NOT_FOUND,
-                        ParserFindTagException)
+from exceptions import ParserFindTagException
+
+GET_RESPONSE_LOG_ERROR = 'Возникла ошибка при загрузке страницы {url}'
+TAG_NOT_FOUND_LOG_ERROR = 'Не найден тег {tag} {attrs}'
+ELEMENTS_NOT_FOUND_LOG_ERROR = 'Не найдены элементы по запросу: {expression}'
 
 
-def get_response(session, url, encoding='utf-8'):
-    """Парсинг url и перехват исключения если url недоступен"""
+class DelayedLogger:
+    """Класс для отложного логирования пойманных ошибок."""
+
+    def __init__(self):
+        self.__messages = []
+
+    def add_message(self, message):
+        self.__messages.append(message)
+
+    def log(self, logger):
+        for error_message in self.__messages:
+            logger(error_message)
+
+
+def get_response(session, url):
     try:
         response = session.get(url)
-        response.encoding = encoding
+        response.encoding = 'utf-8'
         return response
     except RequestException:
-        logging.exception(
-            BROKEN_URL.format(url=url),
-            stack_info=True
+        raise ConnectionError(
+            GET_RESPONSE_LOG_ERROR.format(url=url)
         )
+
+
+def get_soup(session, url, features='lxml'):
+    return BeautifulSoup(
+        get_response(session, url).text,
+        features=features
+    )
 
 
 def find_tag(soup, tag, attrs=None):
-    """Поиск тега в супе и перехват исключения если тег не найден"""
-    searched_tag = soup.find(tag, attrs=(attrs or {}))
+    searched_tag = soup.find(
+        tag, attrs={} if attrs is None else attrs
+    )
     if searched_tag is None:
-        logging.error(
-            TAG_NOT_FOUND.format(tag=tag, attrs=attrs), stack_info=True
-        )
         raise ParserFindTagException(
-            TAG_NOT_FOUND.format(tag=tag, attrs=attrs)
+            TAG_NOT_FOUND_LOG_ERROR.format(tag=tag, attrs=attrs)
         )
     return searched_tag
 
 
-def get_pep_page_status(session, url):
-    """Парсит статус PEP на его странице"""
-    soup = get_soup(session, url)
-    abbr = find_tag(soup, 'abbr')
-    return abbr.text
-
-
-def get_soup(session, url, features='lxml'):
-    """Парсит url и возвращает объект супа"""
-    response = get_response(session, url)
-    if response is None:
-        logging.error(RESPONSE_IS_NONE.format(url=url))
-        return
-    soup = BeautifulSoup(response.text, features)
-    return soup
+def select_elements(soup, expression, single_tag=False):
+    selected = (
+        soup.select_one(expression) if single_tag else soup.select(expression)
+    )
+    if not selected:
+        raise ParserFindTagException(
+            ELEMENTS_NOT_FOUND_LOG_ERROR.format(expression=expression)
+        )
+    return selected
