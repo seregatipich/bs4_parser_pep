@@ -50,3 +50,4 @@ OUTPUT_FORMAT = {
 def control_output(results, cli_args):
     """Контроль отображения результатов парсинга"""
     OUTPUT_FORMAT.get(cli_args.output)(results, cli_args)
+    
