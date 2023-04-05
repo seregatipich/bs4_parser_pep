@@ -11,8 +11,18 @@ EXPECTED_STATUS = {
     '': ('Draft', 'Active'),
 }
 
+DOWNLOAD_LOG_INFO = 'Архив был загружен и сохранён: {archive_path}'
+START_LOG_INFO = 'Парсер запущен!'
+FINISH_LOG_INFO = 'Работа парсера завершена'
+URLS_NOT_FOUND_LOG_ERROR = ('Не найдены ссылки на документацию '
+                            'на странице {url}')
+GENERALISED_LOG_ERROR = 'Ошибка в работе парсера: {error}'
+FILE_OUTPUT_LOG_INFO = 'Файл с результатами был сохранён: {file_path}'
 
 DATETIME_FORMAT = '%Y-%m-%d_%H-%M-%S'
+DT_FORMAT = '%d.%m.%Y %H:%M:%S'
+
+LOG_FORMAT = '"%(asctime)s - [%(levelname)s] - %(message)s"'
 
 OUTPUT_FORMAT_DEFAULT = None
 OUTPUT_FORMAT_FILE = 'file'

@@ -7,19 +7,15 @@ import requests_cache
 from tqdm import tqdm
 
 from configs import configure_argument_parser, configure_logging
-from constants import (BASE_DIR, EXPECTED_STATUS, MAIN_DOC_URL,
-                       MAIN_PEP_URL)
+from constants import (BASE_DIR, EXPECTED_STATUS,
+                       MAIN_DOC_URL, MAIN_PEP_URL,
+                       DOWNLOAD_LOG_INFO, START_LOG_INFO,
+                       FINISH_LOG_INFO, URLS_NOT_FOUND_LOG_ERROR,
+                       GENERALISED_LOG_ERROR)
 from exceptions import ParserFindDocURLsException
 from outputs import control_output
 from utils import (GET_RESPONSE_LOG_ERROR, DelayedLogger, find_tag, get_soup,
                    select_elements)
-
-DOWNLOAD_LOG_INFO = 'Архив был загружен и сохранён: {archive_path}'
-START_LOG_INFO = 'Парсер запущен!'
-FINISH_LOG_INFO = 'Работа парсера завершена'
-URLS_NOT_FOUND_LOG_ERROR = ('Не найдены ссылки на документацию '
-                            'на странице {url}')
-GENERALISED_LOG_ERROR = 'Ошибка в работе парсера: {error}'
 
 
 def whats_new(session):
