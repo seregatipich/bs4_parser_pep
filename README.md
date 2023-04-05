@@ -87,4 +87,8 @@ python main.py [parser variant] -o file
 
 ## License
 
+<<<<<<< HEAD
 This project is licensed under the MIT License. You are free to use it in your projects.
+=======
+This project is licensed under the MIT License. You are free to use it in your projects.
+>>>>>>> 53d8c783e5cb67613e1de4895c3d56f5cbff798c
