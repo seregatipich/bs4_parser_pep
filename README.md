@@ -1,6 +1,5 @@
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat&logo=Python&logoColor=56C0C0&color=008080)](https://www.python.org/)
 [![Practicum.Yandex](https://img.shields.io/badge/-Practicum.Yandex-464646?style=flat&logo=Practicum.Yandex&logoColor=56C0C0&color=008080)](https://practicum.yandex.ru/)
-# OrbitCounter
 ## Description
 Parser of information about Python from **https://docs.python.org/3/** and **https://peps.python.org/**
 
